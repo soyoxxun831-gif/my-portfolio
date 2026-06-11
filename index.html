@@ -2930,7 +2930,7 @@ function xhsRenderPhones(tabIdx) {
       </div>
       <!-- Screenshot as post content (fills remaining) -->
       <div style="flex:1;overflow:hidden;">
-        <img src="${tab.folder}/Screenshot_0${post < 10 ? '0'+post : post}.png"
+        <img src="${tab.folder}/Screenshot_0${post}.png.png"
              alt="Post ${post}"
              style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"
              onerror="this.style.background='#f5f5f5';this.style.display='block';">
@@ -2984,16 +2984,6 @@ document.addEventListener('DOMContentLoaded', () => xhsRenderPhones(0));
 // Also call immediately if DOM is already loaded
 if (document.readyState !== 'loading') xhsRenderPhones(0);
 </script>
-
-ject-fit:cover;object-position:top;display:block;" loading="lazy">
-          </div>
-        </div>
-      </div>
-      <div class="ph-hint">// 四类内容截图预览 · 点击标签切换</div>
-    </div>
-  </div>
-</div>
-</div>
 
 <!-- ══════════════════════════════════════════════════════ -->
 <!-- MODULE 02 · PART B: 丹浔三万里个人IP打造              -->
@@ -3136,7 +3126,7 @@ function partBRenderPhones(categoryIndex){
     button.innerHTML = `
       <span class="partb-phone-notch"></span>
       <span class="partb-phone-screen">
-        <img class="partb-phone-image" src="${category.folder}/Screenshot_0${post}.png.png" alt="${category.title}第${post}篇手机截图" loading="lazy">
+        <img class="partb-phone-image" src="${category.folder}/Screenshot_0${post}.png.png" alt="${category.title}第${post}篇手机截图">
       </span>`;
     const metrics = document.createElement('div');
     metrics.className = 'partb-phone-metrics';
@@ -3484,7 +3474,7 @@ function createArchiveFrame(galleryIndex,itemIndex){
   if(item.type === 'video'){
     media.muted = true; media.loop = true; media.autoplay = true; media.playsInline = true;
     const play = document.createElement('span'); play.className = 'film-play'; play.textContent = '▶'; frame.appendChild(play);
-  }else{media.alt = `${gallery.name}摄影作品 ${itemIndex+1}`; media.loading = 'lazy';}
+  }else{media.alt = `${gallery.name}摄影作品 ${itemIndex+1}`;}
   frame.appendChild(media);
   const no = document.createElement('span'); no.className = 'film-no';
   no.textContent = `${String(galleryIndex+1).padStart(2,'0')}A / ${String(itemIndex+1).padStart(2,'0')}`;
@@ -3652,7 +3642,7 @@ if(idSection) idObs.observe(idSection);
       front.type = 'button';
       front.setAttribute('aria-label','翻转查看' + data[index][1]);
       front.innerHTML =
-        '<span class="project-card-cover"><img src="' + data[index][3] + '" alt="" loading="lazy"></span>' +
+        '<span class="project-card-cover"><img src="' + data[index][3] + '" alt=""></span>' +
         '<span class="project-card-copy"><span class="project-card-index">' + data[index][0] + ' / CLICK TO FLIP</span>' +
         '<span class="project-card-title">' + data[index][1] + '</span>' +
         '<span class="project-card-summary">' + data[index][2] + '</span></span>' +
