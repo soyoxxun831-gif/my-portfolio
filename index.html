@@ -1701,6 +1701,26 @@ body.embed-open{overflow:hidden;}
 .contact-video{top:68px;height:calc(100% - 68px);}
 body.cover-clean{cursor:auto;}
 body.cover-clean #grain,body.cover-clean #cur{display:none;}
+.hidden{display:none!important;}
+.fixed{position:fixed;}
+.inset-0{inset:0;}
+.z-50{z-index:50;}
+.flex{display:flex;}
+.grid{display:grid;}
+.items-center{align-items:center;}
+.justify-center{justify-content:center;}
+.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr));}
+.gap-2{gap:.5rem;}
+.bg-white{background:#fff;}
+.border{border:1px solid rgba(0,0,0,.08);}
+.border-gray-200{border-color:#e5e7eb;}
+.shadow-xl{box-shadow:0 20px 48px rgba(0,0,0,.22);}
+.overflow-hidden{overflow:hidden;}
+.cursor-pointer{cursor:pointer;}
+.transition-all{transition:all .3s;}
+.duration-300{transition-duration:.3s;}
+.text-lg{font-size:1.125rem;line-height:1.75;}
+.text-xl{font-size:1.25rem;line-height:1.5;}
 
 #nav:not(.scrolled){
   top:clamp(18px,4vh,42px);left:0;right:auto;
@@ -1798,9 +1818,6 @@ body.cover-clean #grain,body.cover-clean #cur{display:none;}
   .contact .contact-qrs figcaption{margin-top:2px;font-size:5px;}
 }
 </style>
-<!-- Tailwind CDN (preflight disabled to preserve existing CSS) -->
-<script>window.tailwind={config:{corePlugins:{preflight:false}}}</script>
-<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -1842,7 +1859,7 @@ body.cover-clean #grain,body.cover-clean #cur{display:none;}
 <!-- SECTION 0: HERO                                        -->
 <!-- ══════════════════════════════════════════════════════ -->
 <section class="hero" id="hero">
-  <video class="page-video hero-video" autoplay muted loop playsinline preload="auto" aria-label="作品集封面动画">
+  <video class="page-video hero-video" autoplay muted loop playsinline preload="metadata" aria-label="作品集封面动画">
     <source src="assets/Hero_Section/封面页-web.mp4" type="video/mp4">
   </video>
   <a href="#about" class="hero-explore">探索我</a>
@@ -2932,6 +2949,8 @@ function xhsRenderPhones(tabIdx) {
       <div style="flex:1;overflow:hidden;">
         <img src="${tab.folder}/Screenshot_0${post}.png.png"
              alt="Post ${post}"
+             loading="lazy"
+             decoding="async"
              style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"
              onerror="this.style.background='#f5f5f5';this.style.display='block';">
       </div>
@@ -2960,6 +2979,8 @@ function openLightbox(folder, postNum) {
     const img = document.createElement('img');
     img.src = `${folder}/Grid_Slices/Post${postNum}_Grid${g}.jpg`;
     img.alt = `Grid ${g}`;
+    img.loading = 'lazy';
+    img.decoding = 'async';
     img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
     img.onerror = () => { wrapper.style.background = '#2a2a2a'; };
     wrapper.appendChild(img);
@@ -3126,7 +3147,7 @@ function partBRenderPhones(categoryIndex){
     button.innerHTML = `
       <span class="partb-phone-notch"></span>
       <span class="partb-phone-screen">
-        <img class="partb-phone-image" src="${category.folder}/Screenshot_0${post}.png.png" alt="${category.title}第${post}篇手机截图">
+        <img class="partb-phone-image" src="${category.folder}/Screenshot_0${post}.png.png" alt="${category.title}第${post}篇手机截图" loading="lazy" decoding="async">
       </span>`;
     const metrics = document.createElement('div');
     metrics.className = 'partb-phone-metrics';
@@ -3170,6 +3191,7 @@ function partBOpenGallery(categoryIndex,postNumber){
     image.src = `${gallery.folder}/Grid_Slices/Post${postNumber}_Grid${i}.jpg`;
     image.alt = `${gallery.title} · 第${postNumber}篇图片 ${i}`;
     image.loading = 'lazy';
+    image.decoding = 'async';
     tile.appendChild(image);
     grid.appendChild(tile);
   }
@@ -3291,7 +3313,7 @@ if(document.readyState !== 'loading') partBRenderPhones(0);
 <!-- SECTION 8: CONTACT                                     -->
 <!-- ══════════════════════════════════════════════════════ -->
 <section class="contact" id="contact">
-  <video class="page-video contact-video" autoplay muted loop playsinline preload="auto" aria-label="作品集尾页动画">
+  <video class="page-video contact-video" autoplay muted loop playsinline preload="none" aria-label="作品集尾页动画">
     <source src="assets/Hero_Section/尾页-web.mp4" type="video/mp4">
   </video>
   <div class="contact-overlay">
@@ -3472,9 +3494,13 @@ function createArchiveFrame(galleryIndex,itemIndex){
   const media = document.createElement(item.type === 'video' ? 'video' : 'img');
   media.src = item.url;
   if(item.type === 'video'){
-    media.muted = true; media.loop = true; media.autoplay = true; media.playsInline = true;
+    media.muted = true; media.loop = true; media.autoplay = true; media.playsInline = true; media.preload = 'none';
     const play = document.createElement('span'); play.className = 'film-play'; play.textContent = '▶'; frame.appendChild(play);
-  }else{media.alt = `${gallery.name}摄影作品 ${itemIndex+1}`;}
+  }else{
+    media.alt = `${gallery.name}摄影作品 ${itemIndex+1}`;
+    media.loading = 'lazy';
+    media.decoding = 'async';
+  }
   frame.appendChild(media);
   const no = document.createElement('span'); no.className = 'film-no';
   no.textContent = `${String(galleryIndex+1).padStart(2,'0')}A / ${String(itemIndex+1).padStart(2,'0')}`;
@@ -3528,7 +3554,24 @@ document.addEventListener('keydown',event=>{
   if(event.key === 'ArrowLeft') stepArchiveLightbox(-1);
   if(event.key === 'ArrowRight') stepArchiveLightbox(1);
 });
-renderArchive();
+let archiveRendered = false;
+function ensureArchiveRendered(){
+  if(archiveRendered) return;
+  archiveRendered = true;
+  renderArchive();
+}
+const archiveSection = document.getElementById('photography');
+if('IntersectionObserver' in window && archiveSection){
+  const archiveObs = new IntersectionObserver(entries=>{
+    if(entries.some(entry=>entry.isIntersecting)){
+      ensureArchiveRendered();
+      archiveObs.disconnect();
+    }
+  },{rootMargin:'700px 0px'});
+  archiveObs.observe(archiveSection);
+}else{
+  window.addEventListener('load',ensureArchiveRendered,{once:true});
+}
 
 /* ── DRAWER ────────────────────────────────────── */
 function openDrawer(){ document.getElementById('overlay').classList.add('open'); }
@@ -3642,7 +3685,7 @@ if(idSection) idObs.observe(idSection);
       front.type = 'button';
       front.setAttribute('aria-label','翻转查看' + data[index][1]);
       front.innerHTML =
-        '<span class="project-card-cover"><img src="' + data[index][3] + '" alt=""></span>' +
+        '<span class="project-card-cover"><img src="' + data[index][3] + '" alt="" loading="lazy" decoding="async"></span>' +
         '<span class="project-card-copy"><span class="project-card-index">' + data[index][0] + ' / CLICK TO FLIP</span>' +
         '<span class="project-card-title">' + data[index][1] + '</span>' +
         '<span class="project-card-summary">' + data[index][2] + '</span></span>' +
